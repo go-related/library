@@ -75,6 +75,7 @@ func (b booksDb) GetBookById(ctx context.Context, Id uint) (*models.Book, error)
 }
 
 func NewBooksDB(connectionString string) (BooksDB, error) {
+	// note here we might want to pass our configured logger, so we don't log all the queries
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
 		logrus.WithError(err).Error("couldn't connect to the db")

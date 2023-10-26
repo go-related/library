@@ -7,6 +7,9 @@ import (
 )
 
 func convertBooksToGoaModel(sc *models.Book) *books.Book {
+	if sc == nil || sc.Model.ID == 0 { // this means that the model passed is not correct
+		return nil
+	}
 	id := int(sc.Model.ID)
 
 	var formattedPublishedDate string
@@ -23,6 +26,9 @@ func convertBooksToGoaModel(sc *models.Book) *books.Book {
 }
 
 func convertCreateBookPayloadToBookModel(sc *books.CreateBookPayload, coverBytes *[]byte) models.Book {
+	if sc == nil {
+		return models.Book{}
+	}
 	var publishedDate time.Time
 	if sc.PublishedAt != nil {
 		publishedDate, _ = time.Parse(time.RFC3339, *sc.PublishedAt) // since we have checked the format before this we can ignore the error here

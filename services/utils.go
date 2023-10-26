@@ -5,7 +5,7 @@ import (
 )
 
 func EncodeBytesToBase64String(sc *[]byte) *string {
-	if len(*sc) == 0 {
+	if sc == nil || len(*sc) == 0 {
 		return nil
 	}
 	result := b64.StdEncoding.EncodeToString(*sc)
@@ -13,7 +13,7 @@ func EncodeBytesToBase64String(sc *[]byte) *string {
 }
 
 func DecodeBase64StringToBytes(sc *string) (*[]byte, error) {
-	if len(*sc) == 0 {
+	if sc == nil || len(*sc) == 0 {
 		return nil, nil
 	}
 	result, err := b64.StdEncoding.DecodeString(*sc)

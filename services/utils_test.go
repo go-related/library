@@ -8,7 +8,6 @@ import (
 func TestUtilsEncoding(t *testing.T) {
 
 	t.Run("CheckEncodingEmptySourceReturnsNil", func(t *testing.T) {
-
 		//setup
 		t.Log("Checking the EncodeBytesToBase64String returns nil on empty source")
 		var toEncodeBytes []byte
@@ -24,7 +23,6 @@ func TestUtilsEncoding(t *testing.T) {
 	})
 
 	t.Run("CheckEncodingSourceReturnsCorrectResult", func(t *testing.T) {
-
 		//setup
 		t.Log("Checking the EncodeBytesToBase64String returns correct result")
 		toEncodeBytes := []byte("Hello, world")
@@ -47,7 +45,6 @@ func TestUtilsEncoding(t *testing.T) {
 func TestUtilsDecoding(t *testing.T) {
 
 	t.Run("CheckDecodingNilSourceReturnsNil", func(t *testing.T) {
-
 		//setup
 		t.Log("Checking the DecodeBase64StringToBytes returns nil on Nil source")
 		var toDecodeString string
@@ -65,7 +62,6 @@ func TestUtilsDecoding(t *testing.T) {
 	})
 
 	t.Run("CheckDecodingEmptySourceReturnsNil", func(t *testing.T) {
-
 		//setup
 		t.Log("Checking the DecodeBase64StringToBytes returns nil on empty source")
 		toDecodeString := ""
@@ -83,7 +79,6 @@ func TestUtilsDecoding(t *testing.T) {
 	})
 
 	t.Run("CheckDecodingNonEmptySourceReturnsCorrectResult", func(t *testing.T) {
-
 		//setup
 		t.Log("Checking the DecodeBase64StringToBytes returns correct result on non empty source")
 		toDecodeString := "SGVsbG8sIHdvcmxk"
