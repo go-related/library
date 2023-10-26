@@ -17,11 +17,11 @@ import (
 
 // Client lists the books service endpoint HTTP clients.
 type Client struct {
-	// Items Doer is the HTTP client used to make requests to the items endpoint.
-	ItemsDoer goahttp.Doer
+	// List Doer is the HTTP client used to make requests to the list endpoint.
+	ListDoer goahttp.Doer
 
-	// Item Doer is the HTTP client used to make requests to the item endpoint.
-	ItemDoer goahttp.Doer
+	// Show Doer is the HTTP client used to make requests to the show endpoint.
+	ShowDoer goahttp.Doer
 
 	// Create Doer is the HTTP client used to make requests to the create endpoint.
 	CreateDoer goahttp.Doer
@@ -52,8 +52,8 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		ItemsDoer:           doer,
-		ItemDoer:            doer,
+		ListDoer:            doer,
+		ShowDoer:            doer,
 		CreateDoer:          doer,
 		UpdateDoer:          doer,
 		DeleteDoer:          doer,
@@ -65,39 +65,39 @@ func NewClient(
 	}
 }
 
-// Items returns an endpoint that makes HTTP requests to the books service
-// items server.
-func (c *Client) Items() goa.Endpoint {
+// List returns an endpoint that makes HTTP requests to the books service list
+// server.
+func (c *Client) List() goa.Endpoint {
 	var (
-		decodeResponse = DecodeItemsResponse(c.decoder, c.RestoreResponseBody)
+		decodeResponse = DecodeListResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
-		req, err := c.BuildItemsRequest(ctx, v)
+		req, err := c.BuildListRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.ItemsDoer.Do(req)
+		resp, err := c.ListDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("books", "items", err)
+			return nil, goahttp.ErrRequestError("books", "list", err)
 		}
 		return decodeResponse(resp)
 	}
 }
 
-// Item returns an endpoint that makes HTTP requests to the books service item
+// Show returns an endpoint that makes HTTP requests to the books service show
 // server.
-func (c *Client) Item() goa.Endpoint {
+func (c *Client) Show() goa.Endpoint {
 	var (
-		decodeResponse = DecodeItemResponse(c.decoder, c.RestoreResponseBody)
+		decodeResponse = DecodeShowResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
-		req, err := c.BuildItemRequest(ctx, v)
+		req, err := c.BuildShowRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.ItemDoer.Do(req)
+		resp, err := c.ShowDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("books", "item", err)
+			return nil, goahttp.ErrRequestError("books", "show", err)
 		}
 		return decodeResponse(resp)
 	}

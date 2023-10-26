@@ -16,9 +16,9 @@ import (
 // The book service performs CRUD operations on the books resource.
 type Service interface {
 	// Retrieve all books
-	Items(context.Context) (res []*Book, err error)
+	List(context.Context) (res []*Book, err error)
 	// Retrieve a book by ID
-	Item(context.Context, *ItemPayload) (res *Book, err error)
+	Show(context.Context, *ShowPayload) (res *Book, err error)
 	// Create a new book
 	Create(context.Context, *CreateBookPayload) (res *Book, err error)
 	// Update an existing book
@@ -35,9 +35,9 @@ const ServiceName = "books"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [5]string{"items", "item", "create", "update", "delete"}
+var MethodNames = [5]string{"list", "show", "create", "update", "delete"}
 
-// Book is the result type of the books service item method.
+// Book is the result type of the books service show method.
 type Book struct {
 	// ID of the book
 	ID *int
@@ -45,7 +45,7 @@ type Book struct {
 	Title *string
 	// Author of the book
 	Author *string
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string
 	// Published date of the book
 	PublishedAt *string
@@ -57,7 +57,7 @@ type CreateBookPayload struct {
 	Title string
 	// Author of the book
 	Author string
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string
 	// Published date of the book
 	PublishedAt *string
@@ -69,8 +69,8 @@ type DeletePayload struct {
 	ID int
 }
 
-// ItemPayload is the payload type of the books service item method.
-type ItemPayload struct {
+// ShowPayload is the payload type of the books service show method.
+type ShowPayload struct {
 	// ID of the book
 	ID int
 }
@@ -83,7 +83,7 @@ type UpdateBookPayload struct {
 	Title string
 	// Author of the book
 	Author string
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string
 	// Published date of the book
 	PublishedAt *string
@@ -92,4 +92,9 @@ type UpdateBookPayload struct {
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "not_found", false, false, false)
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "bad_request", false, false, false)
 }

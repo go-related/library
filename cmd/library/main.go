@@ -4,6 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/jt/books/configuration"
+	"github.com/jt/books/database"
+	library "github.com/jt/books/services"
+	"github.com/sirupsen/logrus"
 	"log"
 	"net"
 	"net/url"
@@ -12,7 +16,6 @@ import (
 	"sync"
 	"syscall"
 
-	library "github.com/jt/books"
 	books "github.com/jt/books/gen/books"
 )
 
@@ -25,23 +28,24 @@ func main() {
 		httpPortF = flag.String("http-port", "", "HTTP port (overrides host HTTP port specified in service design)")
 		secureF   = flag.Bool("secure", false, "Use secure scheme (https or grpcs)")
 		dbgF      = flag.Bool("debug", false, "Log request and response bodies")
+		logLevel  = flag.String("log-level", "warn", "log level of the application possible options(debug,info,warn,error)")
 	)
 	flag.Parse()
 
 	// Setup logger. Replace logger with your own log package of choice.
-	var (
-		logger *log.Logger
-	)
-	{
-		logger = log.New(os.Stderr, "[library] ", log.Ltime)
-	}
+	setupLogging(*logLevel)
+	logger := logrus.New()
 
 	// Initialize the services.
 	var (
 		booksSvc books.Service
 	)
 	{
-		booksSvc = library.NewBooks(logger)
+		bookDatabase, err := database.NewBooksDB(configuration.ApplicationConfiguration.DbConnectionString)
+		if err != nil {
+			logrus.WithError(err).Fatal("couldn't setup NewBooksDB")
+		}
+		booksSvc = library.NewBooks(logger, bookDatabase)
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
@@ -92,7 +96,11 @@ func main() {
 			} else if u.Port() == "" {
 				u.Host = net.JoinHostPort(u.Host, "80")
 			}
-			handleHTTPServer(ctx, u, booksEndpoints, &wg, errc, logger, *dbgF)
+
+			//note that I did this here for simplicity on real scenario we need a proper solution
+			httpLogger := log.New(os.Stderr, "[library] ", log.Ltime)
+
+			handleHTTPServer(ctx, u, booksEndpoints, &wg, errc, httpLogger, *dbgF)
 		}
 
 	default:
@@ -107,4 +115,27 @@ func main() {
 
 	wg.Wait()
 	logger.Println("exited")
+}
+
+func setupLogging(logLevel string) {
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetOutput(os.Stdout)
+	//debug,info,warn,error
+	switch logLevel {
+	case "debug":
+		{
+			logrus.SetLevel(logrus.DebugLevel)
+		}
+	case "info":
+		{
+			logrus.SetLevel(logrus.InfoLevel)
+		}
+	case "error":
+		{
+			logrus.SetLevel(logrus.ErrorLevel)
+		}
+	default:
+		logrus.SetLevel(logrus.WarnLevel)
+	}
+
 }

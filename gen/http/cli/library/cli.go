@@ -22,13 +22,13 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `books (items|item|create|update|delete)
+	return `books (list|show|create|update|delete)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` books items` + "\n" +
+	return os.Args[0] + ` books list` + "\n" +
 		""
 }
 
@@ -44,10 +44,10 @@ func ParseEndpoint(
 	var (
 		booksFlags = flag.NewFlagSet("books", flag.ContinueOnError)
 
-		booksItemsFlags = flag.NewFlagSet("items", flag.ExitOnError)
+		booksListFlags = flag.NewFlagSet("list", flag.ExitOnError)
 
-		booksItemFlags  = flag.NewFlagSet("item", flag.ExitOnError)
-		booksItemIDFlag = booksItemFlags.String("id", "REQUIRED", "ID of the book")
+		booksShowFlags  = flag.NewFlagSet("show", flag.ExitOnError)
+		booksShowIDFlag = booksShowFlags.String("id", "REQUIRED", "ID of the book")
 
 		booksCreateFlags    = flag.NewFlagSet("create", flag.ExitOnError)
 		booksCreateBodyFlag = booksCreateFlags.String("body", "REQUIRED", "")
@@ -60,8 +60,8 @@ func ParseEndpoint(
 		booksDeleteIDFlag = booksDeleteFlags.String("id", "REQUIRED", "ID of the book")
 	)
 	booksFlags.Usage = booksUsage
-	booksItemsFlags.Usage = booksItemsUsage
-	booksItemFlags.Usage = booksItemUsage
+	booksListFlags.Usage = booksListUsage
+	booksShowFlags.Usage = booksShowUsage
 	booksCreateFlags.Usage = booksCreateUsage
 	booksUpdateFlags.Usage = booksUpdateUsage
 	booksDeleteFlags.Usage = booksDeleteUsage
@@ -100,11 +100,11 @@ func ParseEndpoint(
 		switch svcn {
 		case "books":
 			switch epn {
-			case "items":
-				epf = booksItemsFlags
+			case "list":
+				epf = booksListFlags
 
-			case "item":
-				epf = booksItemFlags
+			case "show":
+				epf = booksShowFlags
 
 			case "create":
 				epf = booksCreateFlags
@@ -140,12 +140,12 @@ func ParseEndpoint(
 		case "books":
 			c := booksc.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
-			case "items":
-				endpoint = c.Items()
+			case "list":
+				endpoint = c.List()
 				data = nil
-			case "item":
-				endpoint = c.Item()
-				data, err = booksc.BuildItemPayload(*booksItemIDFlag)
+			case "show":
+				endpoint = c.Show()
+				data, err = booksc.BuildShowPayload(*booksShowIDFlag)
 			case "create":
 				endpoint = c.Create()
 				data, err = booksc.BuildCreatePayload(*booksCreateBodyFlag)
@@ -172,8 +172,8 @@ Usage:
     %[1]s [globalflags] books COMMAND [flags]
 
 COMMAND:
-    items: Retrieve all books
-    item: Retrieve a book by ID
+    list: Retrieve all books
+    show: Retrieve a book by ID
     create: Create a new book
     update: Update an existing book
     delete: Delete a book by ID
@@ -182,24 +182,24 @@ Additional help:
     %[1]s books COMMAND --help
 `, os.Args[0])
 }
-func booksItemsUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] books items
+func booksListUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] books list
 
 Retrieve all books
 
 Example:
-    %[1]s books items
+    %[1]s books list
 `, os.Args[0])
 }
 
-func booksItemUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] books item -id INT
+func booksShowUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] books show -id INT
 
 Retrieve a book by ID
     -id INT: ID of the book
 
 Example:
-    %[1]s books item --id 7068496406265531651
+    %[1]s books show --id 3056930450430130409
 `, os.Args[0])
 }
 
@@ -211,10 +211,10 @@ Create a new book
 
 Example:
     %[1]s books create --body '{
-      "author": "Ut sed ut.",
-      "cover": "Accusamus magni ex.",
-      "published_at": "Non corporis quis esse ratione laboriosam.",
-      "title": "Assumenda molestias nihil illo dolorem eveniet."
+      "author": "Minus adipisci consequuntur.",
+      "cover": "QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl",
+      "published_at": "2013-03-01",
+      "title": "Ut in qui quidem ab est."
    }'
 `, os.Args[0])
 }
@@ -228,11 +228,11 @@ Update an existing book
 
 Example:
     %[1]s books update --body '{
-      "author": "Natus nisi.",
-      "cover": "Autem ratione quos maiores aut.",
-      "published_at": "Repellendus eius itaque doloribus.",
-      "title": "Quae voluptas esse ea id assumenda a."
-   }' --id 6444062236966398559
+      "author": "Quo vel ipsa et minima.",
+      "cover": "QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl",
+      "published_at": "1981-02-25",
+      "title": "Maiores facilis ducimus quia harum."
+   }' --id 5569448609837740281
 `, os.Args[0])
 }
 
@@ -243,6 +243,6 @@ Delete a book by ID
     -id INT: ID of the book
 
 Example:
-    %[1]s books delete --id 1820230798726884054
+    %[1]s books delete --id 3173693188622662838
 `, os.Args[0])
 }

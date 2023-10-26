@@ -13,22 +13,23 @@ import (
 	"strconv"
 
 	books "github.com/jt/books/gen/books"
+	goa "goa.design/goa/v3/pkg"
 )
 
-// BuildItemPayload builds the payload for the books item endpoint from CLI
+// BuildShowPayload builds the payload for the books show endpoint from CLI
 // flags.
-func BuildItemPayload(booksItemID string) (*books.ItemPayload, error) {
+func BuildShowPayload(booksShowID string) (*books.ShowPayload, error) {
 	var err error
 	var id int
 	{
 		var v int64
-		v, err = strconv.ParseInt(booksItemID, 10, strconv.IntSize)
+		v, err = strconv.ParseInt(booksShowID, 10, strconv.IntSize)
 		id = int(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for id, must be INT")
 		}
 	}
-	v := &books.ItemPayload{}
+	v := &books.ShowPayload{}
 	v.ID = id
 
 	return v, nil
@@ -42,7 +43,13 @@ func BuildCreatePayload(booksCreateBody string) (*books.CreateBookPayload, error
 	{
 		err = json.Unmarshal([]byte(booksCreateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Ut sed ut.\",\n      \"cover\": \"Accusamus magni ex.\",\n      \"published_at\": \"Non corporis quis esse ratione laboriosam.\",\n      \"title\": \"Assumenda molestias nihil illo dolorem eveniet.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Minus adipisci consequuntur.\",\n      \"cover\": \"QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl\",\n      \"published_at\": \"2013-03-01\",\n      \"title\": \"Ut in qui quidem ab est.\"\n   }'")
+		}
+		if body.PublishedAt != nil {
+			err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		}
+		if err != nil {
+			return nil, err
 		}
 	}
 	v := &books.CreateBookPayload{
@@ -63,7 +70,13 @@ func BuildUpdatePayload(booksUpdateBody string, booksUpdateID string) (*books.Up
 	{
 		err = json.Unmarshal([]byte(booksUpdateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Natus nisi.\",\n      \"cover\": \"Autem ratione quos maiores aut.\",\n      \"published_at\": \"Repellendus eius itaque doloribus.\",\n      \"title\": \"Quae voluptas esse ea id assumenda a.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Quo vel ipsa et minima.\",\n      \"cover\": \"QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl\",\n      \"published_at\": \"1981-02-25\",\n      \"title\": \"Maiores facilis ducimus quia harum.\"\n   }'")
+		}
+		if body.PublishedAt != nil {
+			err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		}
+		if err != nil {
+			return nil, err
 		}
 	}
 	var id int

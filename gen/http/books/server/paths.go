@@ -11,13 +11,13 @@ import (
 	"fmt"
 )
 
-// ItemsBooksPath returns the URL path to the books service items HTTP endpoint.
-func ItemsBooksPath() string {
+// ListBooksPath returns the URL path to the books service list HTTP endpoint.
+func ListBooksPath() string {
 	return "/books"
 }
 
-// ItemBooksPath returns the URL path to the books service item HTTP endpoint.
-func ItemBooksPath(id int) string {
+// ShowBooksPath returns the URL path to the books service show HTTP endpoint.
+func ShowBooksPath(id int) string {
 	return fmt.Sprintf("/books/%v", id)
 }
 

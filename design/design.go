@@ -15,35 +15,6 @@ var _ = API("library", func() {
 	})
 })
 
-// Book represents a book entity.
-var Book = Type("Book", func() {
-	Description("book entity.")
-	Attribute("id", Int, "ID of the book")
-	Attribute("title", String, "Title of the book")
-	Attribute("author", String, "Author of the book")
-	Attribute("cover", String, "Book cover image URL")
-	Attribute("published_at", String, "Published date of the book")
-})
-
-// CreateBookPayload payload for creating a new book
-var CreateBookPayload = Type("CreateBookPayload", func() {
-	Field(1, "title", String, "Title of the book")
-	Field(2, "author", String, "Author of the book")
-	Field(3, "cover", String, "Book cover image URL")
-	Field(4, "published_at", String, "Published date of the book")
-	Required("title", "author")
-})
-
-// UpdateBookPayload payload for creating a new book
-var UpdateBookPayload = Type("UpdateBookPayload", func() {
-	Field(1, "id", Int, "ID of the book")
-	Field(2, "title", String, "Title of the book")
-	Field(3, "author", String, "Author of the book")
-	Field(4, "cover", String, "Book cover image URL")
-	Field(5, "published_at", String, "Published date of the book")
-	Required("id", "title", "author")
-})
-
 var _ = Service("books", func() {
 	Description("The book service performs CRUD operations on the books resource.")
 
@@ -51,9 +22,13 @@ var _ = Service("books", func() {
 	Error("not_found", func() {
 		Description("Book not found")
 	})
+	// error that will be returned when book is not found
+	Error("bad_request", func() {
+		Description("Invalid request")
+	})
 
 	// Crud operations
-	Method("items", func() {
+	Method("list", func() {
 		Description("Retrieve all books")
 		Result(ArrayOf(Book))
 
@@ -63,7 +38,7 @@ var _ = Service("books", func() {
 		})
 	})
 
-	Method("item", func() {
+	Method("show", func() {
 		Description("Retrieve a book by ID")
 		Payload(func() {
 			Field(1, "id", Int, "ID of the book")
@@ -86,6 +61,7 @@ var _ = Service("books", func() {
 		HTTP(func() {
 			POST("/books")
 			Response(StatusCreated)
+			Response("bad_request", StatusBadRequest)
 		})
 	})
 
@@ -98,6 +74,7 @@ var _ = Service("books", func() {
 			PUT("/books/{id}")
 			Response(StatusOK)
 			Response("not_found", StatusNotFound)
+			Response("bad_request", StatusBadRequest)
 		})
 	})
 

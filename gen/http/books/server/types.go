@@ -19,7 +19,7 @@ type CreateRequestBody struct {
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Author of the book
 	Author *string `form:"author,omitempty" json:"author,omitempty" xml:"author,omitempty"`
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string `form:"cover,omitempty" json:"cover,omitempty" xml:"cover,omitempty"`
 	// Published date of the book
 	PublishedAt *string `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
@@ -32,26 +32,26 @@ type UpdateRequestBody struct {
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Author of the book
 	Author *string `form:"author,omitempty" json:"author,omitempty" xml:"author,omitempty"`
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string `form:"cover,omitempty" json:"cover,omitempty" xml:"cover,omitempty"`
 	// Published date of the book
 	PublishedAt *string `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
 }
 
-// ItemsResponseBody is the type of the "books" service "items" endpoint HTTP
+// ListResponseBody is the type of the "books" service "list" endpoint HTTP
 // response body.
-type ItemsResponseBody []*BookResponse
+type ListResponseBody []*BookResponse
 
-// ItemResponseBody is the type of the "books" service "item" endpoint HTTP
+// ShowResponseBody is the type of the "books" service "show" endpoint HTTP
 // response body.
-type ItemResponseBody struct {
+type ShowResponseBody struct {
 	// ID of the book
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// Title of the book
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Author of the book
 	Author *string `form:"author,omitempty" json:"author,omitempty" xml:"author,omitempty"`
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string `form:"cover,omitempty" json:"cover,omitempty" xml:"cover,omitempty"`
 	// Published date of the book
 	PublishedAt *string `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
@@ -66,7 +66,7 @@ type CreateResponseBody struct {
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Author of the book
 	Author *string `form:"author,omitempty" json:"author,omitempty" xml:"author,omitempty"`
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string `form:"cover,omitempty" json:"cover,omitempty" xml:"cover,omitempty"`
 	// Published date of the book
 	PublishedAt *string `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
@@ -81,15 +81,33 @@ type UpdateResponseBody struct {
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Author of the book
 	Author *string `form:"author,omitempty" json:"author,omitempty" xml:"author,omitempty"`
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string `form:"cover,omitempty" json:"cover,omitempty" xml:"cover,omitempty"`
 	// Published date of the book
 	PublishedAt *string `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
 }
 
-// ItemNotFoundResponseBody is the type of the "books" service "item" endpoint
+// ShowNotFoundResponseBody is the type of the "books" service "show" endpoint
 // HTTP response body for the "not_found" error.
-type ItemNotFoundResponseBody struct {
+type ShowNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateBadRequestResponseBody is the type of the "books" service "create"
+// endpoint HTTP response body for the "bad_request" error.
+type CreateBadRequestResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -108,6 +126,24 @@ type ItemNotFoundResponseBody struct {
 // UpdateNotFoundResponseBody is the type of the "books" service "update"
 // endpoint HTTP response body for the "not_found" error.
 type UpdateNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateBadRequestResponseBody is the type of the "books" service "update"
+// endpoint HTTP response body for the "bad_request" error.
+type UpdateBadRequestResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -149,15 +185,15 @@ type BookResponse struct {
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Author of the book
 	Author *string `form:"author,omitempty" json:"author,omitempty" xml:"author,omitempty"`
-	// Book cover image URL
+	// Base64 of the Book cover image
 	Cover *string `form:"cover,omitempty" json:"cover,omitempty" xml:"cover,omitempty"`
 	// Published date of the book
 	PublishedAt *string `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
 }
 
-// NewItemsResponseBody builds the HTTP response body from the result of the
-// "items" endpoint of the "books" service.
-func NewItemsResponseBody(res []*books.Book) ItemsResponseBody {
+// NewListResponseBody builds the HTTP response body from the result of the
+// "list" endpoint of the "books" service.
+func NewListResponseBody(res []*books.Book) ListResponseBody {
 	body := make([]*BookResponse, len(res))
 	for i, val := range res {
 		body[i] = marshalBooksBookToBookResponse(val)
@@ -165,10 +201,10 @@ func NewItemsResponseBody(res []*books.Book) ItemsResponseBody {
 	return body
 }
 
-// NewItemResponseBody builds the HTTP response body from the result of the
-// "item" endpoint of the "books" service.
-func NewItemResponseBody(res *books.Book) *ItemResponseBody {
-	body := &ItemResponseBody{
+// NewShowResponseBody builds the HTTP response body from the result of the
+// "show" endpoint of the "books" service.
+func NewShowResponseBody(res *books.Book) *ShowResponseBody {
+	body := &ShowResponseBody{
 		ID:          res.ID,
 		Title:       res.Title,
 		Author:      res.Author,
@@ -204,10 +240,24 @@ func NewUpdateResponseBody(res *books.Book) *UpdateResponseBody {
 	return body
 }
 
-// NewItemNotFoundResponseBody builds the HTTP response body from the result of
-// the "item" endpoint of the "books" service.
-func NewItemNotFoundResponseBody(res *goa.ServiceError) *ItemNotFoundResponseBody {
-	body := &ItemNotFoundResponseBody{
+// NewShowNotFoundResponseBody builds the HTTP response body from the result of
+// the "show" endpoint of the "books" service.
+func NewShowNotFoundResponseBody(res *goa.ServiceError) *ShowNotFoundResponseBody {
+	body := &ShowNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateBadRequestResponseBody builds the HTTP response body from the
+// result of the "create" endpoint of the "books" service.
+func NewCreateBadRequestResponseBody(res *goa.ServiceError) *CreateBadRequestResponseBody {
+	body := &CreateBadRequestResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -232,6 +282,20 @@ func NewUpdateNotFoundResponseBody(res *goa.ServiceError) *UpdateNotFoundRespons
 	return body
 }
 
+// NewUpdateBadRequestResponseBody builds the HTTP response body from the
+// result of the "update" endpoint of the "books" service.
+func NewUpdateBadRequestResponseBody(res *goa.ServiceError) *UpdateBadRequestResponseBody {
+	body := &UpdateBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewDeleteNotFoundResponseBody builds the HTTP response body from the result
 // of the "delete" endpoint of the "books" service.
 func NewDeleteNotFoundResponseBody(res *goa.ServiceError) *DeleteNotFoundResponseBody {
@@ -246,9 +310,9 @@ func NewDeleteNotFoundResponseBody(res *goa.ServiceError) *DeleteNotFoundRespons
 	return body
 }
 
-// NewItemPayload builds a books service item endpoint payload.
-func NewItemPayload(id int) *books.ItemPayload {
-	v := &books.ItemPayload{}
+// NewShowPayload builds a books service show endpoint payload.
+func NewShowPayload(id int) *books.ShowPayload {
+	v := &books.ShowPayload{}
 	v.ID = id
 
 	return v
@@ -295,6 +359,9 @@ func ValidateCreateRequestBody(body *CreateRequestBody) (err error) {
 	if body.Author == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("author", "body"))
 	}
+	if body.PublishedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+	}
 	return
 }
 
@@ -305,6 +372,9 @@ func ValidateUpdateRequestBody(body *UpdateRequestBody) (err error) {
 	}
 	if body.Author == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("author", "body"))
+	}
+	if body.PublishedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
 	}
 	return
 }

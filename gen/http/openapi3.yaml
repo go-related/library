@@ -10,9 +10,9 @@ paths:
         get:
             tags:
                 - books
-            summary: items books
+            summary: list books
             description: Retrieve all books
-            operationId: books#items
+            operationId: books#list
             responses:
                 "200":
                     description: OK response.
@@ -23,27 +23,27 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/Book'
                                 example:
-                                    - author: Fugit atque.
-                                      cover: Labore iusto velit nisi asperiores quae laboriosam.
-                                      id: 574123798766923736
-                                      published_at: Soluta ut maiores omnis alias et sapiente.
-                                      title: Est ea ipsam et.
-                                    - author: Fugit atque.
-                                      cover: Labore iusto velit nisi asperiores quae laboriosam.
-                                      id: 574123798766923736
-                                      published_at: Soluta ut maiores omnis alias et sapiente.
-                                      title: Est ea ipsam et.
+                                    - author: Autem ratione quos maiores aut.
+                                      cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                      id: 839652626468377019
+                                      published_at: "1995-01-24"
+                                      title: Natus nisi.
+                                    - author: Autem ratione quos maiores aut.
+                                      cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                      id: 839652626468377019
+                                      published_at: "1995-01-24"
+                                      title: Natus nisi.
                             example:
-                                - author: Fugit atque.
-                                  cover: Labore iusto velit nisi asperiores quae laboriosam.
-                                  id: 574123798766923736
-                                  published_at: Soluta ut maiores omnis alias et sapiente.
-                                  title: Est ea ipsam et.
-                                - author: Fugit atque.
-                                  cover: Labore iusto velit nisi asperiores quae laboriosam.
-                                  id: 574123798766923736
-                                  published_at: Soluta ut maiores omnis alias et sapiente.
-                                  title: Est ea ipsam et.
+                                - author: Autem ratione quos maiores aut.
+                                  cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                  id: 839652626468377019
+                                  published_at: "1995-01-24"
+                                  title: Natus nisi.
+                                - author: Autem ratione quos maiores aut.
+                                  cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                  id: 839652626468377019
+                                  published_at: "1995-01-24"
+                                  title: Natus nisi.
         post:
             tags:
                 - books
@@ -57,10 +57,10 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateRequestBody'
                         example:
-                            author: Ut sed ut.
-                            cover: Accusamus magni ex.
-                            published_at: Non corporis quis esse ratione laboriosam.
-                            title: Assumenda molestias nihil illo dolorem eveniet.
+                            author: Minus adipisci consequuntur.
+                            cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                            published_at: "2013-03-01"
+                            title: Ut in qui quidem ab est.
             responses:
                 "201":
                     description: Created response.
@@ -69,11 +69,17 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Book'
                             example:
-                                author: Quod deleniti sit libero quia delectus illum.
-                                cover: Quam alias totam odit vel.
-                                id: 3298023426695319693
-                                published_at: Ea ducimus sed illo.
-                                title: Fugiat iste dolor.
+                                author: Quia et doloremque iste tenetur reiciendis.
+                                cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                id: 451593135011823783
+                                published_at: "1988-09-30"
+                                title: Quos voluptas consequuntur distinctio.
+                "400":
+                    description: 'bad_request: Invalid request'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /books/{id}:
         delete:
             tags:
@@ -89,9 +95,9 @@ paths:
                   schema:
                     type: integer
                     description: ID of the book
-                    example: 5931299780148696562
+                    example: 954307459471136738
                     format: int64
-                  example: 3430727541953347701
+                  example: 6011518428279830551
             responses:
                 "204":
                     description: No Content response.
@@ -104,9 +110,9 @@ paths:
         get:
             tags:
                 - books
-            summary: item books
+            summary: show books
             description: Retrieve a book by ID
-            operationId: books#item
+            operationId: books#show
             parameters:
                 - name: id
                   in: path
@@ -115,9 +121,9 @@ paths:
                   schema:
                     type: integer
                     description: ID of the book
-                    example: 7035043250637820502
+                    example: 5473319107528582917
                     format: int64
-                  example: 1518949043902126798
+                  example: 6759162165553766526
             responses:
                 "200":
                     description: OK response.
@@ -126,11 +132,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Book'
                             example:
-                                author: Beatae laudantium.
-                                cover: Earum ipsa.
-                                id: 5020441747468955616
-                                published_at: Provident et est deserunt molestiae eveniet culpa.
-                                title: Reprehenderit commodi.
+                                author: Earum ratione.
+                                cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                id: 5236897334243105371
+                                published_at: "1989-02-17"
+                                title: Totam consequatur dolorem dolores quos nulla.
                 "404":
                     description: 'not_found: Book not found'
                     content:
@@ -151,9 +157,9 @@ paths:
                   schema:
                     type: integer
                     description: ID of the book
-                    example: 5271667840791771538
+                    example: 3550288720998950124
                     format: int64
-                  example: 7283074570080235998
+                  example: 1849925603555373327
             requestBody:
                 required: true
                 content:
@@ -161,10 +167,10 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateRequestBody'
                         example:
-                            author: Natus nisi.
-                            cover: Autem ratione quos maiores aut.
-                            published_at: Repellendus eius itaque doloribus.
-                            title: Quae voluptas esse ea id assumenda a.
+                            author: Quo vel ipsa et minima.
+                            cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                            published_at: "1981-02-25"
+                            title: Maiores facilis ducimus quia harum.
             responses:
                 "200":
                     description: OK response.
@@ -173,11 +179,17 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Book'
                             example:
-                                author: Dolorum ut cum est est.
-                                cover: Dolorem omnis enim magnam consequatur.
-                                id: 680707819253261469
-                                published_at: Minima et ut iure placeat voluptatem laudantium.
-                                title: Eveniet quisquam necessitatibus nostrum nihil eum.
+                                author: Magnam neque molestiae.
+                                cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                                id: 809293982379405338
+                                published_at: "1973-04-15"
+                                title: Ab odio et eius et laboriosam maxime.
+                "400":
+                    description: 'bad_request: Invalid request'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'not_found: Book not found'
                     content:
@@ -201,55 +213,57 @@ components:
                 author:
                     type: string
                     description: Author of the book
-                    example: Harum non voluptate nihil voluptatem labore.
+                    example: Mollitia deserunt ut.
                 cover:
                     type: string
-                    description: Book cover image URL
-                    example: Occaecati qui dolorem facilis illo laborum.
+                    description: Base64 of the Book cover image
+                    example: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                 id:
                     type: integer
                     description: ID of the book
-                    example: 6296725216571199201
+                    example: 6365987449865989254
                     format: int64
                 published_at:
                     type: string
                     description: Published date of the book
-                    example: Error amet sed voluptas.
+                    example: "1987-06-20"
+                    format: date
                 title:
                     type: string
                     description: Title of the book
-                    example: Non enim totam harum tenetur.
+                    example: Corporis explicabo cupiditate omnis.
             description: book entity.
             example:
-                author: Iure dolor.
-                cover: Minus corporis qui nostrum.
-                id: 6582752785552411377
-                published_at: Et dolorum voluptatem quae nesciunt.
-                title: Autem quae cumque.
+                author: Similique blanditiis.
+                cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                id: 9005968646101795375
+                published_at: "1971-12-09"
+                title: Tempore pariatur ab consequatur est.
         CreateRequestBody:
             type: object
             properties:
                 author:
                     type: string
                     description: Author of the book
-                    example: In molestiae autem eveniet laborum.
+                    example: Quae vel nesciunt doloremque veniam quo quis.
                 cover:
                     type: string
-                    description: Book cover image URL
-                    example: Praesentium omnis eum ut.
+                    description: Base64 of the Book cover image
+                    example: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                 published_at:
                     type: string
                     description: Published date of the book
-                    example: Repudiandae minus.
+                    example: "1979-03-13"
+                    format: date
                 title:
                     type: string
                     description: Title of the book
-                    example: Necessitatibus nam eos exercitationem.
+                    example: Sit sunt et quo rerum sit.
             example:
-                author: Illum iusto accusamus sit animi aperiam beatae.
-                cover: Reiciendis fugit.
-                published_at: Perspiciatis provident aspernatur.
-                title: Omnis iusto quia et.
+                author: Qui voluptate quaerat.
+                cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
+                published_at: "1997-08-27"
+                title: Odit rerum porro sequi.
             required:
                 - title
                 - author
@@ -275,19 +289,19 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: true
+                    example: false
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: true
+                    example: false
             description: Book not found
             example:
                 fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
-                timeout: false
+                temporary: true
+                timeout: true
             required:
                 - name
                 - id
