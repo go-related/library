@@ -42,6 +42,9 @@ func convertCreateBookPayloadToBookModel(sc *books.CreateBookPayload, coverBytes
 }
 
 func convertUpdatePayloadToBookModel(sc *books.UpdateBookPayload, coverBytes *[]byte) models.Book {
+	if sc == nil {
+		return models.Book{}
+	}
 	var publishedDate time.Time
 	if sc.PublishedAt != nil {
 		publishedDate, _ = time.Parse(time.RFC3339, *sc.PublishedAt) // since we have checked the format before this we can ignore the error here

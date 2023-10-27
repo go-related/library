@@ -29,7 +29,7 @@ func TestConverters(t *testing.T) {
 	t.Run("CheckConvertingBookModelReturnsCorrectResult", func(t *testing.T) {
 		//setup
 		t.Log("Checking that method convertBooksToGoaModel returns correct result")
-		toConvertDate := time.Now()
+		toConvertDate, _ := time.Parse(time.RFC3339, "2023-10-27T09:10:14Z")
 		toConvertId := 1
 		toConvertModel := models.Book{
 			Title:       "testTitle",
@@ -39,7 +39,7 @@ func TestConverters(t *testing.T) {
 		}
 		toConvertModel.Model.ID = uint(toConvertId)
 
-		expectedDate := toConvertDate.Format(time.RFC3339)
+		expectedDate := "2023-10-27T09:10:14Z"
 		expectedData := books.Book{
 			ID:          &toConvertId,
 			Title:       &toConvertModel.Title,
@@ -92,18 +92,81 @@ func TestConverters(t *testing.T) {
 
 	})
 
-	//TODO non empty result
-	t.Run("CheckConvertingEmptyCreateBookPayloadReturnsEmptyResult", func(t *testing.T) {
+	t.Run("CheckConvertingNonEmptyCreateBookPayloadReturnsCorrectResult", func(t *testing.T) {
 		//setup
-		t.Log("Checking that method convertCreateBookPayloadToBookModel returns nil on empty source")
-		var toConvertModel books.CreateBookPayload
+		t.Log("Checking that method convertCreateBookPayloadToBookModel returns correct result")
+		toConvertDate, _ := time.Parse(time.RFC3339, "2023-10-27T09:10:14Z")
+		expectedDate := "2023-10-27T09:10:14Z"
+		toConvertCover := ""
+		toConvertModel := books.CreateBookPayload{
+			Author:      "test",
+			Title:       "testTitle",
+			PublishedAt: &expectedDate,
+			Cover:       &toConvertCover,
+		}
+		expectedCover := []byte(toConvertCover)
+		expected := models.Book{
+			PublishedAt: &toConvertDate,
+			Author:      "test",
+			Title:       "testTitle",
+			Cover:       &expectedCover,
+		}
+
+		//execute
+		result := convertCreateBookPayloadToBookModel(&toConvertModel, &expectedCover)
+
+		//assertion
+		compareResult, compareError := compareStructFields(expected, result)
+		if !compareResult {
+			t.Fatalf("failed to return proper response (%s)", compareError)
+		}
+
+	})
+
+	t.Run("CheckConvertingEmptyUpdateBookPayloadReturnsEmptyResult", func(t *testing.T) {
+		//setup
+		t.Log("Checking that method convertUpdatePayloadToBookModel returns nil on empty source")
+		var toConvertModel books.UpdateBookPayload
 		var expectedDate time.Time
 		expected := models.Book{
 			PublishedAt: &expectedDate,
 		}
 
 		//execute
-		result := convertCreateBookPayloadToBookModel(&toConvertModel, nil)
+		result := convertUpdatePayloadToBookModel(&toConvertModel, nil)
+
+		//assertion
+		compareResult, compareError := compareStructFields(expected, result)
+		if !compareResult {
+			t.Fatalf("failed to return proper response (%s)", compareError)
+		}
+
+	})
+
+	t.Run("CheckConvertingNonEmptyUpdateBookPayloadReturnsCorrectResult", func(t *testing.T) {
+		//setup
+		t.Log("Checking that method convertUpdatePayloadToBookModel returns correct result")
+		toConvertDate, _ := time.Parse(time.RFC3339, "2023-10-27T09:10:14Z")
+		expectedDate := "2023-10-27T09:10:14Z"
+		toConvertCover := "testing"
+		toConvertModel := books.UpdateBookPayload{
+			Author:      "test",
+			Title:       "testTitle",
+			PublishedAt: &expectedDate,
+			Cover:       &toConvertCover,
+			ID:          10,
+		}
+		expectedCover := []byte(toConvertCover)
+		expected := models.Book{
+			PublishedAt: &toConvertDate,
+			Author:      "test",
+			Title:       "testTitle",
+			Cover:       &expectedCover,
+		}
+		expected.ID = 10
+
+		//execute
+		result := convertUpdatePayloadToBookModel(&toConvertModel, &expectedCover)
 
 		//assertion
 		compareResult, compareError := compareStructFields(expected, result)
@@ -121,6 +184,7 @@ func compareStructFields(expected, result interface{}) (bool, string) {
 	for i := 0; i < expectedValues.NumField(); i++ {
 		f1 := expectedValues.Field(i).Interface()
 		f2 := resultValues.Field(i).Interface()
+		resultValues.Field(i).Type()
 		if !reflect.DeepEqual(f1, f2) {
 			return false, fmt.Sprintf("field %v is not equal", t.Field(i).Name)
 		}
