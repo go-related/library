@@ -18,6 +18,7 @@ func TestBookHappyPath(t *testing.T) {
 	logger := log.New("book_tests", false)
 	mockDB := NewMockedBooksDb()
 	service := services.NewBooks(logger, mockDB)
+
 	t.Run("BooksListReturnsCorrectResult", func(t *testing.T) {
 		//setup
 		t.Log("Testing that method list of the service bookssrvc returns correct result")
