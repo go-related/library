@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -11,6 +10,7 @@ import (
 
 	books "github.com/jt/books/gen/books"
 	bookssvr "github.com/jt/books/gen/http/books/server"
+	log "github.com/jt/books/gen/log"
 	goahttp "goa.design/goa/v3/http"
 	httpmdlwr "goa.design/goa/v3/http/middleware"
 	"goa.design/goa/v3/middleware"
@@ -25,7 +25,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, booksEndpoints *books.End
 		adapter middleware.Logger
 	)
 	{
-		adapter = middleware.NewLogger(logger)
+		adapter = logger
 	}
 
 	// Provide the transport specific request decoder and response encoder.
@@ -76,7 +76,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, booksEndpoints *books.End
 	// configure the server as required by your service.
 	srv := &http.Server{Addr: u.Host, Handler: handler, ReadHeaderTimeout: time.Second * 60}
 	for _, m := range booksServer.Mounts {
-		logger.Printf("HTTP %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
+		logger.Info().Msgf("HTTP %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
 	}
 
 	(*wg).Add(1)
@@ -85,12 +85,12 @@ func handleHTTPServer(ctx context.Context, u *url.URL, booksEndpoints *books.End
 
 		// Start HTTP server in a separate goroutine.
 		go func() {
-			logger.Printf("HTTP server listening on %q", u.Host)
+			logger.Info().Msgf("HTTP server listening on %q", u.Host)
 			errc <- srv.ListenAndServe()
 		}()
 
 		<-ctx.Done()
-		logger.Printf("shutting down HTTP server at %q", u.Host)
+		logger.Info().Msgf("shutting down HTTP server at %q", u.Host)
 
 		// Shutdown gracefully with a 30s timeout.
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -98,7 +98,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, booksEndpoints *books.End
 
 		err := srv.Shutdown(ctx)
 		if err != nil {
-			logger.Printf("failed to shutdown: %v", err)
+			logger.Info().Msgf("failed to shutdown: %v", err)
 		}
 	}()
 }
@@ -110,6 +110,6 @@ func errorHandler(logger *log.Logger) func(context.Context, http.ResponseWriter,
 	return func(ctx context.Context, w http.ResponseWriter, err error) {
 		id := ctx.Value(middleware.RequestIDKey).(string)
 		_, _ = w.Write([]byte("[" + id + "] encoding: " + err.Error()))
-		logger.Printf("[%s] ERROR: %s", id, err.Error())
+		logger.Error().Str("id", id).Err(err).Send()
 	}
 }

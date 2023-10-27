@@ -3,6 +3,7 @@ package design
 import (
 	. "goa.design/goa/v3/dsl"
 )
+import _ "goa.design/plugins/v3/zerologger"
 
 var _ = API("library", func() {
 	Title("Library Service")
@@ -16,13 +17,14 @@ var _ = API("library", func() {
 })
 
 var _ = Service("books", func() {
+
 	Description("The book service performs CRUD operations on the books resource.")
 
 	// error that will be returned when book is not found
 	Error("not_found", func() {
 		Description("Book not found")
 	})
-	// error that will be returned when book is not found
+	// error that will be returned when custom validation has failed
 	Error("bad_request", func() {
 		Description("Invalid request")
 	})

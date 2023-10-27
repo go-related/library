@@ -2,7 +2,7 @@ package configuration
 
 import (
 	"errors"
-	"github.com/sirupsen/logrus"
+	log "github.com/jt/books/gen/log"
 	"github.com/spf13/viper"
 )
 
@@ -12,7 +12,7 @@ type LibraryConfiguration struct {
 
 var ApplicationConfiguration LibraryConfiguration
 
-func init() {
+func LoadConfiguration(logger *log.Logger) {
 	v := viper.New()
 	v.SetConfigName("default")
 	v.SetConfigType("yml")
@@ -23,12 +23,12 @@ func init() {
 		// It's okay if there isn't a config file
 		var configFileNotFoundError viper.ConfigFileNotFoundError
 		if !errors.Is(err, &configFileNotFoundError) {
-			logrus.WithError(err).Errorf("error loading config file")
+			logger.Error().Err(err).Msg("error loading config file")
 		}
 	}
 	v.AutomaticEnv()
 	err := v.UnmarshalExact(&ApplicationConfiguration)
 	if err != nil {
-		logrus.WithError(err).Errorf("error mapping config file to type")
+		logger.Error().Err(err).Msg("error mapping config file to type")
 	}
 }

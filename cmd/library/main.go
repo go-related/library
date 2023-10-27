@@ -7,8 +7,7 @@ import (
 	"github.com/jt/books/configuration"
 	"github.com/jt/books/database"
 	library "github.com/jt/books/services"
-	"github.com/sirupsen/logrus"
-	"log"
+	"github.com/rs/zerolog"
 	"net"
 	"net/url"
 	"os"
@@ -17,6 +16,7 @@ import (
 	"syscall"
 
 	books "github.com/jt/books/gen/books"
+	log "github.com/jt/books/gen/log"
 )
 
 func main() {
@@ -33,17 +33,16 @@ func main() {
 	flag.Parse()
 
 	// Setup logger. Replace logger with your own log package of choice.
-	setupLogging(*logLevel)
-	logger := logrus.New()
-
+	logger := setupLogging(*logLevel)
+	configuration.LoadConfiguration(logger)
 	// Initialize the services.
 	var (
 		booksSvc books.Service
 	)
 	{
-		bookDatabase, err := database.NewBooksDB(configuration.ApplicationConfiguration.DbConnectionString)
+		bookDatabase, err := database.NewBooksDB(configuration.ApplicationConfiguration.DbConnectionString, logger)
 		if err != nil {
-			logrus.WithError(err).Fatal("couldn't setup NewBooksDB")
+			logger.Fatal().Err(err).Msgf("couldn't setup NewBooksDB")
 		}
 		booksSvc = library.NewBooks(logger, bookDatabase)
 	}
@@ -79,7 +78,7 @@ func main() {
 			addr := "http://localhost:8000"
 			u, err := url.Parse(addr)
 			if err != nil {
-				logger.Fatalf("invalid URL %#v: %s\n", addr, err)
+				logger.Fatal().Msgf("invalid URL %#v: %s\n", addr, err)
 			}
 			if *secureF {
 				u.Scheme = "https"
@@ -90,52 +89,48 @@ func main() {
 			if *httpPortF != "" {
 				h, _, err := net.SplitHostPort(u.Host)
 				if err != nil {
-					logger.Fatalf("invalid URL %#v: %s\n", u.Host, err)
+					logger.Fatal().Msgf("invalid URL %#v: %s\n", u.Host, err)
 				}
 				u.Host = net.JoinHostPort(h, *httpPortF)
 			} else if u.Port() == "" {
 				u.Host = net.JoinHostPort(u.Host, "80")
 			}
-
-			//note that I did this here for simplicity on real scenario we need a proper solution
-			httpLogger := log.New(os.Stderr, "[library] ", log.Ltime)
-
-			handleHTTPServer(ctx, u, booksEndpoints, &wg, errc, httpLogger, *dbgF)
+			handleHTTPServer(ctx, u, booksEndpoints, &wg, errc, logger, *dbgF)
 		}
 
 	default:
-		logger.Fatalf("invalid host argument: %q (valid hosts: localhost)\n", *hostF)
+		logger.Fatal().Msgf("invalid host argument: %q (valid hosts: localhost)\n", *hostF)
 	}
 
 	// Wait for signal.
-	logger.Printf("exiting (%v)", <-errc)
+	logger.Info().Msgf("exiting (%v)", <-errc)
 
 	// Send cancellation signal to the goroutines.
 	cancel()
 
 	wg.Wait()
-	logger.Println("exited")
+	logger.Info().Msgf("exited")
 }
 
-func setupLogging(logLevel string) {
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-	logrus.SetOutput(os.Stdout)
+func setupLogging(logLevel string) *log.Logger {
+	logger := log.New("library", false)
 	//debug,info,warn,error
 	switch logLevel {
 	case "debug":
 		{
-			logrus.SetLevel(logrus.DebugLevel)
+			logger.Level(zerolog.DebugLevel)
 		}
 	case "info":
 		{
-			logrus.SetLevel(logrus.InfoLevel)
+			logger.Level(zerolog.InfoLevel)
 		}
 	case "error":
 		{
-			logrus.SetLevel(logrus.ErrorLevel)
+			logger.Level(zerolog.ErrorLevel)
 		}
 	default:
-		logrus.SetLevel(logrus.WarnLevel)
+		logger.Level(zerolog.WarnLevel)
 	}
+	return logger
 
 }
