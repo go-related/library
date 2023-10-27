@@ -32,6 +32,9 @@ type Client struct {
 	// Delete Doer is the HTTP client used to make requests to the delete endpoint.
 	DeleteDoer goahttp.Doer
 
+	// CORS Doer is the HTTP client used to make requests to the  endpoint.
+	CORSDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -57,6 +60,7 @@ func NewClient(
 		CreateDoer:          doer,
 		UpdateDoer:          doer,
 		DeleteDoer:          doer,
+		CORSDoer:            doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,

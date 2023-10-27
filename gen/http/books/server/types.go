@@ -360,7 +360,7 @@ func ValidateCreateRequestBody(body *CreateRequestBody) (err error) {
 		err = goa.MergeErrors(err, goa.MissingFieldError("author", "body"))
 	}
 	if body.PublishedAt != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
 	}
 	return
 }
@@ -374,7 +374,7 @@ func ValidateUpdateRequestBody(body *UpdateRequestBody) (err error) {
 		err = goa.MergeErrors(err, goa.MissingFieldError("author", "body"))
 	}
 	if body.PublishedAt != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
 	}
 	return
 }

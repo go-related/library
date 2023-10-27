@@ -2,6 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 import _ "goa.design/plugins/v3/zerologger"
 
@@ -19,7 +20,11 @@ var _ = API("library", func() {
 var _ = Service("books", func() {
 
 	Description("The book service performs CRUD operations on the books resource.")
-
+	cors.Origin("*", func() {
+		cors.Headers("*")
+		cors.Methods("*")
+		cors.Expose("X-Time")
+	}) // not in a real scenario
 	// error that will be returned when book is not found
 	Error("not_found", func() {
 		Description("Book not found")

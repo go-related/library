@@ -341,7 +341,7 @@ func NewDeleteNotFound(body *DeleteNotFoundResponseBody) *goa.ServiceError {
 // ValidateShowResponseBody runs the validations defined on ShowResponseBody
 func ValidateShowResponseBody(body *ShowResponseBody) (err error) {
 	if body.PublishedAt != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
 	}
 	return
 }
@@ -349,7 +349,7 @@ func ValidateShowResponseBody(body *ShowResponseBody) (err error) {
 // ValidateCreateResponseBody runs the validations defined on CreateResponseBody
 func ValidateCreateResponseBody(body *CreateResponseBody) (err error) {
 	if body.PublishedAt != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
 	}
 	return
 }
@@ -357,7 +357,7 @@ func ValidateCreateResponseBody(body *CreateResponseBody) (err error) {
 // ValidateUpdateResponseBody runs the validations defined on UpdateResponseBody
 func ValidateUpdateResponseBody(body *UpdateResponseBody) (err error) {
 	if body.PublishedAt != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
 	}
 	return
 }
@@ -485,7 +485,7 @@ func ValidateDeleteNotFoundResponseBody(body *DeleteNotFoundResponseBody) (err e
 // ValidateBookResponse runs the validations defined on BookResponse
 func ValidateBookResponse(body *BookResponse) (err error) {
 	if body.PublishedAt != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDate))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
 	}
 	return
 }

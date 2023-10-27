@@ -112,6 +112,7 @@ func main() {
 	logger.Info().Msgf("exited")
 }
 
+// normally we don't need to set the logger of this logger in case we set the global level
 func setupLogging(logLevel string) *log.Logger {
 	logger := log.New("library", false)
 	//debug,info,warn,error

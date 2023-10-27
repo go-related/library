@@ -26,23 +26,23 @@ paths:
                                     - author: Autem ratione quos maiores aut.
                                       cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                       id: 839652626468377019
-                                      published_at: "1995-01-24"
+                                      published_at: "1997-07-25T10:42:46Z"
                                       title: Natus nisi.
                                     - author: Autem ratione quos maiores aut.
                                       cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                       id: 839652626468377019
-                                      published_at: "1995-01-24"
+                                      published_at: "1997-07-25T10:42:46Z"
                                       title: Natus nisi.
                             example:
                                 - author: Autem ratione quos maiores aut.
                                   cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                   id: 839652626468377019
-                                  published_at: "1995-01-24"
+                                  published_at: "1997-07-25T10:42:46Z"
                                   title: Natus nisi.
                                 - author: Autem ratione quos maiores aut.
                                   cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                   id: 839652626468377019
-                                  published_at: "1995-01-24"
+                                  published_at: "1997-07-25T10:42:46Z"
                                   title: Natus nisi.
         post:
             tags:
@@ -59,7 +59,7 @@ paths:
                         example:
                             author: Minus adipisci consequuntur.
                             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
-                            published_at: "2013-03-01"
+                            published_at: "2012-06-24T11:13:57Z"
                             title: Ut in qui quidem ab est.
             responses:
                 "201":
@@ -72,7 +72,7 @@ paths:
                                 author: Quia et doloremque iste tenetur reiciendis.
                                 cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                 id: 451593135011823783
-                                published_at: "1988-09-30"
+                                published_at: "2001-05-06T03:18:26Z"
                                 title: Quos voluptas consequuntur distinctio.
                 "400":
                     description: 'bad_request: Invalid request'
@@ -135,7 +135,7 @@ paths:
                                 author: Earum ratione.
                                 cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                 id: 5236897334243105371
-                                published_at: "1989-02-17"
+                                published_at: "2011-10-30T03:26:56Z"
                                 title: Totam consequatur dolorem dolores quos nulla.
                 "404":
                     description: 'not_found: Book not found'
@@ -169,7 +169,7 @@ paths:
                         example:
                             author: Quo vel ipsa et minima.
                             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
-                            published_at: "1981-02-25"
+                            published_at: "1990-02-10T16:36:44Z"
                             title: Maiores facilis ducimus quia harum.
             responses:
                 "200":
@@ -182,7 +182,7 @@ paths:
                                 author: Magnam neque molestiae.
                                 cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                                 id: 809293982379405338
-                                published_at: "1973-04-15"
+                                published_at: "1979-09-20T01:03:47Z"
                                 title: Ab odio et eius et laboriosam maxime.
                 "400":
                     description: 'bad_request: Invalid request'
@@ -226,8 +226,8 @@ components:
                 published_at:
                     type: string
                     description: Published date of the book
-                    example: "1987-06-20"
-                    format: date
+                    example: "1993-04-16T01:20:11Z"
+                    format: date-time
                 title:
                     type: string
                     description: Title of the book
@@ -237,7 +237,7 @@ components:
                 author: Similique blanditiis.
                 cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
                 id: 9005968646101795375
-                published_at: "1971-12-09"
+                published_at: "1970-04-08T16:16:29Z"
                 title: Tempore pariatur ab consequatur est.
         CreateRequestBody:
             type: object
@@ -253,8 +253,8 @@ components:
                 published_at:
                     type: string
                     description: Published date of the book
-                    example: "1979-03-13"
-                    format: date
+                    example: "1997-11-30T02:20:12Z"
+                    format: date-time
                 title:
                     type: string
                     description: Title of the book
@@ -262,7 +262,7 @@ components:
             example:
                 author: Qui voluptate quaerat.
                 cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
-                published_at: "1997-08-27"
+                published_at: "2008-06-24T07:45:11Z"
                 title: Odit rerum porro sequi.
             required:
                 - title

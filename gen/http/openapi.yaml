@@ -169,8 +169,8 @@ definitions:
             published_at:
                 type: string
                 description: Published date of the book
-                example: "2012-03-09"
-                format: date
+                example: "1984-11-24T18:54:17Z"
+                format: date-time
             title:
                 type: string
                 description: Title of the book
@@ -180,7 +180,7 @@ definitions:
             author: Accusamus sit.
             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
             id: 3172195751037199972
-            published_at: "1996-11-17"
+            published_at: "1991-04-29T19:48:57Z"
             title: Dignissimos illum.
     BooksCreateBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
@@ -240,8 +240,8 @@ definitions:
             published_at:
                 type: string
                 description: Published date of the book
-                example: "1976-12-20"
-                format: date
+                example: "1981-12-27T20:18:58Z"
+                format: date-time
             title:
                 type: string
                 description: Title of the book
@@ -249,7 +249,7 @@ definitions:
         example:
             author: Velit sequi quia quia quibusdam.
             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
-            published_at: "1984-03-30"
+            published_at: "1971-01-18T02:14:46Z"
             title: Sit culpa reiciendis id non.
         required:
             - title
@@ -274,8 +274,8 @@ definitions:
             published_at:
                 type: string
                 description: Published date of the book
-                example: "1991-10-31"
-                format: date
+                example: "1998-12-11T12:58:56Z"
+                format: date-time
             title:
                 type: string
                 description: Title of the book
@@ -284,7 +284,7 @@ definitions:
             author: Error repudiandae itaque eos tempore magni.
             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
             id: 8055002382332140739
-            published_at: "1978-05-10"
+            published_at: "2005-07-29T22:20:58Z"
             title: Consequatur cupiditate perspiciatis.
     BooksDeleteNotFoundResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
@@ -392,8 +392,8 @@ definitions:
             published_at:
                 type: string
                 description: Published date of the book
-                example: "1970-03-12"
-                format: date
+                example: "2013-08-03T09:12:37Z"
+                format: date-time
             title:
                 type: string
                 description: Title of the book
@@ -402,7 +402,7 @@ definitions:
             author: Suscipit necessitatibus eveniet dolor.
             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
             id: 3161842094744503688
-            published_at: "1976-03-13"
+            published_at: "2003-07-25T19:57:51Z"
             title: Ratione corrupti aspernatur asperiores ex fugit vero.
     BooksUpdateBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
@@ -505,8 +505,8 @@ definitions:
             published_at:
                 type: string
                 description: Published date of the book
-                example: "1984-11-24"
-                format: date
+                example: "2010-05-04T17:37:29Z"
+                format: date-time
             title:
                 type: string
                 description: Title of the book
@@ -514,7 +514,7 @@ definitions:
         example:
             author: Aperiam quasi.
             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
-            published_at: "1991-09-29"
+            published_at: "1988-01-25T14:27:22Z"
             title: Saepe aut aperiam sint.
         required:
             - title
@@ -539,8 +539,8 @@ definitions:
             published_at:
                 type: string
                 description: Published date of the book
-                example: "2008-04-17"
-                format: date
+                example: "1986-06-13T14:56:03Z"
+                format: date-time
             title:
                 type: string
                 description: Title of the book
@@ -549,5 +549,5 @@ definitions:
             author: Et qui rerum.
             cover: QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl
             id: 3333684133296519941
-            published_at: "1974-09-28"
+            published_at: "1972-07-21T03:38:13Z"
             title: Quibusdam similique dolor iste sunt enim impedit.

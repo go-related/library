@@ -14,6 +14,7 @@ import (
 	books "github.com/jt/books/gen/books"
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the books service endpoint HTTP handlers.
@@ -24,6 +25,7 @@ type Server struct {
 	Create             http.Handler
 	Update             http.Handler
 	Delete             http.Handler
+	CORS               http.Handler
 	GenHTTPOpenapiJSON http.Handler
 }
 
@@ -63,6 +65,9 @@ func New(
 			{"Create", "POST", "/books"},
 			{"Update", "PUT", "/books/{id}"},
 			{"Delete", "DELETE", "/books/{id}"},
+			{"CORS", "OPTIONS", "/books"},
+			{"CORS", "OPTIONS", "/books/{id}"},
+			{"CORS", "OPTIONS", "/openapi.json"},
 			{"./gen/http/openapi.json", "GET", "/openapi.json"},
 		},
 		List:               NewListHandler(e.List, mux, decoder, encoder, errhandler, formatter),
@@ -70,6 +75,7 @@ func New(
 		Create:             NewCreateHandler(e.Create, mux, decoder, encoder, errhandler, formatter),
 		Update:             NewUpdateHandler(e.Update, mux, decoder, encoder, errhandler, formatter),
 		Delete:             NewDeleteHandler(e.Delete, mux, decoder, encoder, errhandler, formatter),
+		CORS:               NewCORSHandler(),
 		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
@@ -84,6 +90,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Create = m(s.Create)
 	s.Update = m(s.Update)
 	s.Delete = m(s.Delete)
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -96,6 +103,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreateHandler(mux, h.Create)
 	MountUpdateHandler(mux, h.Update)
 	MountDeleteHandler(mux, h.Delete)
+	MountCORSHandler(mux, h.CORS)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
@@ -107,7 +115,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountListHandler configures the mux to serve the "books" service "list"
 // endpoint.
 func MountListHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleBooksOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -151,7 +159,7 @@ func NewListHandler(
 // MountShowHandler configures the mux to serve the "books" service "show"
 // endpoint.
 func MountShowHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleBooksOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -202,7 +210,7 @@ func NewShowHandler(
 // MountCreateHandler configures the mux to serve the "books" service "create"
 // endpoint.
 func MountCreateHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleBooksOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -253,7 +261,7 @@ func NewCreateHandler(
 // MountUpdateHandler configures the mux to serve the "books" service "update"
 // endpoint.
 func MountUpdateHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleBooksOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -304,7 +312,7 @@ func NewUpdateHandler(
 // MountDeleteHandler configures the mux to serve the "books" service "delete"
 // endpoint.
 func MountDeleteHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleBooksOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -355,5 +363,48 @@ func NewDeleteHandler(
 // MountGenHTTPOpenapiJSON configures the mux to serve GET request made to
 // "/openapi.json".
 func MountGenHTTPOpenapiJSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/openapi.json", h.ServeHTTP)
+	mux.Handle("GET", "/openapi.json", HandleBooksOrigin(h).ServeHTTP)
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service books.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleBooksOrigin(h)
+	mux.Handle("OPTIONS", "/books", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/books/{id}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/openapi.json", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleBooksOrigin applies the CORS response headers corresponding to the
+// origin for the service books.
+func HandleBooksOrigin(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOrigin(origin, "*") {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Expose-Headers", "X-Time")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "*")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
+	})
 }

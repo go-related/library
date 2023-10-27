@@ -213,7 +213,7 @@ Example:
     %[1]s books create --body '{
       "author": "Minus adipisci consequuntur.",
       "cover": "QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl",
-      "published_at": "2013-03-01",
+      "published_at": "2012-06-24T11:13:57Z",
       "title": "Ut in qui quidem ab est."
    }'
 `, os.Args[0])
@@ -230,7 +230,7 @@ Example:
     %[1]s books update --body '{
       "author": "Quo vel ipsa et minima.",
       "cover": "QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl",
-      "published_at": "1981-02-25",
+      "published_at": "1990-02-10T16:36:44Z",
       "title": "Maiores facilis ducimus quia harum."
    }' --id 5569448609837740281
 `, os.Args[0])

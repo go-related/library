@@ -14,6 +14,8 @@ import (
 	"testing"
 )
 
+// i have combined all the test into 2 main categories but in real scenario we should divide into much more than that
+
 func TestBookHappyPath(t *testing.T) {
 	logger := log.New("book_tests", false)
 	mockDB := NewMockedBooksDb()
