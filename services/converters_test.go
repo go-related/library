@@ -85,7 +85,7 @@ func TestConverters(t *testing.T) {
 		result := convertCreateBookPayloadToBookModel(&toConvertModel, nil)
 
 		//assertion
-		compareResult, compareError := compareStructFields(expected, result)
+		compareResult, compareError := CompareStructFields(expected, result)
 		if !compareResult {
 			t.Fatalf("failed to return proper response (%s)", compareError)
 		}
@@ -116,7 +116,7 @@ func TestConverters(t *testing.T) {
 		result := convertCreateBookPayloadToBookModel(&toConvertModel, &expectedCover)
 
 		//assertion
-		compareResult, compareError := compareStructFields(expected, result)
+		compareResult, compareError := CompareStructFields(expected, result)
 		if !compareResult {
 			t.Fatalf("failed to return proper response (%s)", compareError)
 		}
@@ -136,7 +136,7 @@ func TestConverters(t *testing.T) {
 		result := convertUpdatePayloadToBookModel(&toConvertModel, nil)
 
 		//assertion
-		compareResult, compareError := compareStructFields(expected, result)
+		compareResult, compareError := CompareStructFields(expected, result)
 		if !compareResult {
 			t.Fatalf("failed to return proper response (%s)", compareError)
 		}
@@ -169,7 +169,7 @@ func TestConverters(t *testing.T) {
 		result := convertUpdatePayloadToBookModel(&toConvertModel, &expectedCover)
 
 		//assertion
-		compareResult, compareError := compareStructFields(expected, result)
+		compareResult, compareError := CompareStructFields(expected, result)
 		if !compareResult {
 			t.Fatalf("failed to return proper response (%s)", compareError)
 		}
@@ -177,7 +177,7 @@ func TestConverters(t *testing.T) {
 	})
 }
 
-func compareStructFields(expected, result interface{}) (bool, string) {
+func CompareStructFields(expected, result interface{}) (bool, string) {
 	expectedValues := reflect.ValueOf(expected)
 	resultValues := reflect.ValueOf(result)
 	t := reflect.TypeOf(expected)

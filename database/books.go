@@ -91,7 +91,7 @@ func (b *booksDatabase) GetBookById(ctx context.Context, Id uint) (*models.Book,
 	var readBook models.Book
 	result := b.db.Model(&models.Book{}).First(&readBook, Id)
 	if result.Error != nil {
-		b.logger.Error().Err(result.Error).Msg("couldn't create the book")
+		b.logger.Error().Err(result.Error).Msg("couldn't load the book")
 	}
 	return &readBook, result.Error
 }
