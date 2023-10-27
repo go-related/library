@@ -118,18 +118,24 @@ func setupLogging(logLevel string) *log.Logger {
 	switch logLevel {
 	case "debug":
 		{
+			zerolog.SetGlobalLevel(zerolog.DebugLevel)
 			logger.Level(zerolog.DebugLevel)
 		}
 	case "info":
 		{
+			zerolog.SetGlobalLevel(zerolog.InfoLevel)
 			logger.Level(zerolog.InfoLevel)
 		}
 	case "error":
 		{
+			zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 			logger.Level(zerolog.ErrorLevel)
 		}
 	default:
-		logger.Level(zerolog.WarnLevel)
+		{
+			zerolog.SetGlobalLevel(zerolog.WarnLevel)
+			logger.Level(zerolog.WarnLevel)
+		}
 	}
 	return logger
 
