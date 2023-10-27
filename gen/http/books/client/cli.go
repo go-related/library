@@ -43,7 +43,7 @@ func BuildCreatePayload(booksCreateBody string) (*books.CreateBookPayload, error
 	{
 		err = json.Unmarshal([]byte(booksCreateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Minus adipisci consequuntur.\",\n      \"cover\": \"QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl\",\n      \"published_at\": \"2012-06-24T11:13:57Z\",\n      \"title\": \"Ut in qui quidem ab est.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Ut maiores omnis alias et sapiente.\",\n      \"cover\": \"QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl\",\n      \"published_at\": \"2006-01-02T15:04:05Z\",\n      \"title\": \"Iusto velit nisi asperiores quae laboriosam blanditiis.\"\n   }'")
 		}
 		if body.PublishedAt != nil {
 			err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))
@@ -70,7 +70,7 @@ func BuildUpdatePayload(booksUpdateBody string, booksUpdateID string) (*books.Up
 	{
 		err = json.Unmarshal([]byte(booksUpdateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Quo vel ipsa et minima.\",\n      \"cover\": \"QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl\",\n      \"published_at\": \"1990-02-10T16:36:44Z\",\n      \"title\": \"Maiores facilis ducimus quia harum.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"author\": \"Provident et est deserunt molestiae eveniet culpa.\",\n      \"cover\": \"QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl\",\n      \"published_at\": \"2006-01-02T15:04:05Z\",\n      \"title\": \"Earum ipsa.\"\n   }'")
 		}
 		if body.PublishedAt != nil {
 			err = goa.MergeErrors(err, goa.ValidateFormat("body.published_at", *body.PublishedAt, goa.FormatDateTime))

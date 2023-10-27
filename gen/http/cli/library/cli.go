@@ -199,7 +199,7 @@ Retrieve a book by ID
     -id INT: ID of the book
 
 Example:
-    %[1]s books show --id 3056930450430130409
+    %[1]s books show --id 8279019754401504035
 `, os.Args[0])
 }
 
@@ -211,10 +211,10 @@ Create a new book
 
 Example:
     %[1]s books create --body '{
-      "author": "Minus adipisci consequuntur.",
+      "author": "Ut maiores omnis alias et sapiente.",
       "cover": "QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl",
-      "published_at": "2012-06-24T11:13:57Z",
-      "title": "Ut in qui quidem ab est."
+      "published_at": "2006-01-02T15:04:05Z",
+      "title": "Iusto velit nisi asperiores quae laboriosam blanditiis."
    }'
 `, os.Args[0])
 }
@@ -228,11 +228,11 @@ Update an existing book
 
 Example:
     %[1]s books update --body '{
-      "author": "Quo vel ipsa et minima.",
+      "author": "Provident et est deserunt molestiae eveniet culpa.",
       "cover": "QmFzZTY0IG9mIHRoZSBCb29rIGNvdmVyIGltYWdl",
-      "published_at": "1990-02-10T16:36:44Z",
-      "title": "Maiores facilis ducimus quia harum."
-   }' --id 5569448609837740281
+      "published_at": "2006-01-02T15:04:05Z",
+      "title": "Earum ipsa."
+   }' --id 4959925566193265165
 `, os.Args[0])
 }
 
@@ -243,6 +243,6 @@ Delete a book by ID
     -id INT: ID of the book
 
 Example:
-    %[1]s books delete --id 3173693188622662838
+    %[1]s books delete --id 960742242410361373
 `, os.Args[0])
 }

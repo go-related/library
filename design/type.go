@@ -17,6 +17,7 @@ var Book = Type("Book", func() {
 	Attribute("published_at", String, func() {
 		Description("Published date of the book")
 		Format(FormatDateTime)
+		Example("2006-01-02T15:04:05Z")
 	})
 })
 
@@ -31,6 +32,7 @@ var CreateBookPayload = Type("CreateBookPayload", func() {
 	Field(4, "published_at", String, func() {
 		Description("Published date of the book")
 		Format(FormatDateTime)
+		Example("2006-01-02T15:04:05Z")
 	})
 	Required("title", "author")
 })
@@ -47,6 +49,7 @@ var UpdateBookPayload = Type("UpdateBookPayload", func() {
 	Field(5, "published_at", String, func() {
 		Description("Published date of the book")
 		Format(FormatDateTime)
+		Example("2006-01-02T15:04:05Z")
 	})
 	Required("id", "title", "author")
 })
