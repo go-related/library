@@ -37,7 +37,7 @@
    go test -v ./...
    ```
 5. Api documentation 
-      TODO
+      access it here[https://petstore.swagger.io/?url=https://github.com/go-related/library/blob/main/gen/http/openapi3.yaml] 
 ## Notes 
 1. Application will run migration auto migration everytime is starts/restart 
 2. On the config folder you will find a postman collection with sample calls to the application(import that you should be good to go, i didn't include variables to make it simpler to import)
